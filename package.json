@@ -1,0 +1,22 @@
+{
+  "name": "files_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shanejohnpaul/marsilea-auchenium.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shanejohnpaul/marsilea-auchenium/issues"
+  },
+  "homepage": "https://github.com/shanejohnpaul/marsilea-auchenium#readme",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.7.3"
+  }
+}

@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+service FileService {
+  rpc Login (LoginRequest) returns (LoginResponse) {}
+  rpc GetFolderContent (GetFolderContentRequest) returns (GetFolderContentResponse) {}
+  rpc GetFileContent (GetFileContentRequest) returns (GetFileContentResponse) {}
+  rpc CreateFile (CreateFileRequest) returns (CreateFileResponse) {}
+  rpc CreateFolder (CreateFolderRequest) returns (CreateFolderResponse) {}
+  rpc MoveFile (MoveFileRequest) returns (MoveFileResponse) {}
+}
+
+
+message LoginRequest {
+  string username = 1;
+  string pwd = 2;
+}
+
+message LoginResponse { string token = 1; }
+
+message File {
+  string _id = 1;
+  string name = 2;
+  string createdAt = 3;
+}
+
+message Folder {
+  string _id = 1;
+  string name = 2;
+  string createdAt = 3;
+}
+
+// Get folder content messages
+message GetFolderContentRequest { optional string folder_id = 1; }
+
+message GetFolderContentResponse {
+  repeated File files = 1;
+  repeated Folder folders = 2;
+}
+
+
+// Get file content messages (to get actual contents of the file)
+message GetFileContentRequest { string file_id = 1; }
+
+message GetFileContentResponse { string content = 1; }
+
+
+// Create file messages
+message CreateFileRequest {
+  string name = 1;
+  string content = 2;
+  string folder_id = 3;
+}
+
+message CreateFileResponse { File file = 1; }
+
+
+// Create folder messages
+message CreateFolderRequest { string name = 1; }
+
+message CreateFolderResponse { Folder folder = 1; }
+
+
+// Move file messages
+message MoveFileRequest {
+  string file_id = 1;
+  string src_folder_id = 2;
+  string dst_folder_id = 3;
+}
+
+message MoveFileResponse { string message = 1; }
