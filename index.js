@@ -1,8 +1,24 @@
-var PROTO_PATH = __dirname + "/protos/files.proto";
-var grpc = require("@grpc/grpc-js");
-var protoLoader = require("@grpc/proto-loader");
+const PROTO_PATH = __dirname + "/protos/files.proto";
+const grpc = require("@grpc/grpc-js");
+const protoLoader = require("@grpc/proto-loader");
+const userController = require("./controllers/users");
 
-// Suggested options for similarity to existing grpc.load behavior
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
+//MongoDB Connection
+require("mongoose")
+  .connect(process.env.MONGODB_URI)
+  .then(() => {
+    console.log("Connected to database");
+  })
+  .catch((err) => {
+    console.log(err);
+    process.exit(1);
+  });
+
+//gRPC load proto file
 var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
   arrays: true,
