@@ -26,10 +26,15 @@ var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 });
 
 var filesProto = grpc.loadPackageDefinition(packageDefinition);
-
 var server = new grpc.Server();
 
-server.bindAsync("0.0.0.0:50051", grpc.ServerCredentials.createInsecure(), () => {
+//gRPC create service
+server.addService(filesProto.FileService.service, {
+  Login: userController.Login,
+  Register: userController.Register,
+});
+
+server.bindAsync(`0.0.0.0:${process.env.PORT}`, grpc.ServerCredentials.createInsecure(), () => {
   server.start();
-  console.log("Server running at grpc://0.0.0.0:50051");
+  console.log(`Server running at grpc://0.0.0.0:${process.env.PORT}`);
 });

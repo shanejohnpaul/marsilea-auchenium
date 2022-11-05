@@ -17,6 +17,12 @@
   },
   "homepage": "https://github.com/shanejohnpaul/marsilea-auchenium#readme",
   "dependencies": {
-    "@grpc/grpc-js": "^1.7.3"
+    "@grpc/grpc-js": "^1.7.3",
+    "bcrypt": "^5.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.7.1"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3"
   }
 }

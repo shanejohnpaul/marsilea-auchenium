@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 service FileService {
+  rpc Register (RegisterRequest) returns (RegisterResponse) {}
   rpc Login (LoginRequest) returns (LoginResponse) {}
   rpc GetFolderContent (GetFolderContentRequest) returns (GetFolderContentResponse) {}
   rpc GetFileContent (GetFileContentRequest) returns (GetFileContentResponse) {}
@@ -9,6 +10,13 @@ service FileService {
   rpc MoveFile (MoveFileRequest) returns (MoveFileResponse) {}
 }
 
+message RegisterRequest {
+  string name = 1;
+  string username = 2;
+  string pwd = 3;
+}
+
+message RegisterResponse { string message = 1; }
 
 message LoginRequest {
   string username = 1;
