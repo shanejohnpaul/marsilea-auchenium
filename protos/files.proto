@@ -71,8 +71,7 @@ message CreateFolderResponse { Folder folder = 1; }
 // Move file messages
 message MoveFileRequest {
   string file_id = 1;
-  string src_folder_id = 2;
-  string dst_folder_id = 3;
+  string dst_folder_id = 2;
 }
 
 message MoveFileResponse { string message = 1; }
