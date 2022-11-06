@@ -78,3 +78,5 @@ Please refer the `protos/files.proto` file for the full API specifications.
 - **CreateFile** - Creates a new file (when folder ID is not given create a file in the root folder)
 - **CreateFolder** - Create a new folder
 - **MoveFile** - Moves a file between folders, given the file ID and destination folder ID
+
+**NOTE:** Token is sent via the `authorization` metadata field and is required for all requests except `Register` and `Login`
