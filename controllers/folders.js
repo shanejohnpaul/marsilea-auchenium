@@ -59,7 +59,7 @@ exports.GetFolderContent = async (call, callback) => {
       const allFolders = await Folder.find({ user_id: user_id }).select("-user_id -__v").lean();
 
       // Check if root folder exists
-      const rootFolderExists = await Folder.exists({ name: "/" });
+      const rootFolderExists = await Folder.exists({ user_id: user_id, name: "/" });
       if (!rootFolderExists) return callback(null, { files: [], folders: allFolders });
       else {
         const rootFilesFound = await File.find({ user_id: user_id, folder_id: rootFolderExists._id })
@@ -70,7 +70,7 @@ exports.GetFolderContent = async (call, callback) => {
     }
 
     // Check if folder exists
-    const folderExists = await Folder.findById(call.request.folder_id);
+    const folderExists = await Folder.findOne({ user_id: user_id, _id: call.request.folder_id });
     if (!folderExists) return callback({ code: grpc.status.NOT_FOUND, details: "Folder doesn't exists" });
 
     // Get files in folder
