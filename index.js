@@ -41,7 +41,7 @@ server.addService(filesProto.FileService.service, {
   MoveFile: fileController.MoveFile,
 });
 
-server.bindAsync(`0.0.0.0:${process.env.PORT}`, grpc.ServerCredentials.createInsecure(), () => {
+server.bindAsync(`0.0.0.0:${process.env.PORT || "8080"}`, grpc.ServerCredentials.createInsecure(), () => {
   server.start();
-  console.log(`Server running at grpc://0.0.0.0:${process.env.PORT}`);
+  console.log(`Server running at grpc://0.0.0.0:${process.env.PORT || "8080"}`);
 });
