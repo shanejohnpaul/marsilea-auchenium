@@ -60,7 +60,7 @@ exports.CreateFile = async (call, callback) => {
   } catch (error) {
     console.log(error);
     if (error === "Invalid token/Session expired")
-      callback({
+      return callback({
         code: grpc.status.UNAUTHENTICATED,
         details: error,
       });
