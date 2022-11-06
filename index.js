@@ -37,6 +37,7 @@ server.addService(filesProto.FileService.service, {
   CreateFolder: folderController.CreateFolder,
   GetFolderContent: folderController.GetFolderContent,
   CreateFile: fileController.CreateFile,
+  GetFileContent: fileController.GetFileContent,
 });
 
 server.bindAsync(`0.0.0.0:${process.env.PORT}`, grpc.ServerCredentials.createInsecure(), () => {

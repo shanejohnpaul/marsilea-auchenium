@@ -70,3 +70,32 @@ exports.CreateFile = async (call, callback) => {
     });
   }
 };
+
+exports.GetFileContent = async (call, callback) => {
+  try {
+    // Check authentication
+    const user_id = checkAuth(call.metadata);
+
+    // Check if file ID is given
+    if (call.request.file_id === "")
+      return callback({ code: grpc.status.INVALID_ARGUMENT, details: "File ID required" });
+
+    // Get file content
+    const fileContent = await File.findById(call.request.file_id).select("content").lean();
+
+    if (!fileContent) return callback({ code: grpc.status.NOT_FOUND, details: "File doesn't exists" });
+
+    callback(null, { content: fileContent.content });
+  } catch (error) {
+    console.log(error);
+    if (error === "Invalid token/Session expired")
+      return callback({
+        code: grpc.status.UNAUTHENTICATED,
+        details: error,
+      });
+    callback({
+      code: grpc.status.UNKNOWN,
+      details: error,
+    });
+  }
+};
