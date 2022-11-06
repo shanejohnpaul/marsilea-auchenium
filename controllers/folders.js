@@ -1,6 +1,7 @@
 const grpc = require("@grpc/grpc-js");
 const checkAuth = require("../middleware/checkAuth");
 const Folder = require("../models/Folder");
+const File = require("../models/File");
 
 exports.CreateFolder = async (call, callback) => {
   try {
@@ -40,6 +41,59 @@ exports.CreateFolder = async (call, callback) => {
         code: grpc.status.UNAUTHENTICATED,
         details: error,
       });
+    callback({
+      code: grpc.status.UNKNOWN,
+      details: error,
+    });
+  }
+};
+
+exports.GetFolderContent = async (call, callback) => {
+  try {
+    // Check authentication
+    const user_id = checkAuth(call.metadata);
+
+    // Return root folder contents if folder_id in not given
+    if (call.request.folder_id === "" || call.request.folder_id === undefined) {
+      // Get all folders
+      const allFolders = await Folder.find({ user_id: user_id }).select("-user_id -__v").lean();
+
+      // Check if root folder exists
+      const rootFolderExists = await Folder.exists({ name: "/" });
+      if (!rootFolderExists) return callback(null, { files: [], folders: allFolders });
+      else {
+        const rootFilesFound = await File.find({ user_id: user_id, folder_id: rootFolderExists._id })
+          .select("-user_id -folder_id -content -__v")
+          .lean();
+        return callback(null, { files: rootFilesFound, folders: allFolders });
+      }
+    }
+
+    // Check if folder exists
+    const folderExists = await Folder.findById(call.request.folder_id);
+    if (!folderExists) return callback({ code: grpc.status.NOT_FOUND, details: "Folder doesn't exists" });
+
+    // Get files in folder
+    const filesFound = await File.find({ user_id: user_id, folder_id: folderExists._id })
+      .select("-user_id -folder_id -content -__v")
+      .lean();
+
+    // If root folder, send all folders too
+    if (folderExists.name === "/") {
+      const allFolders = await Folder.find({ user_id: user_id }).select("-user_id -__v").lean();
+      return callback(null, { files: filesFound, folders: allFolders });
+    }
+
+    callback(null, { files: filesFound, folders: [] });
+  } catch (error) {
+    console.log(error);
+    if (error === "Invalid token/Session expired")
+      return callback({
+        code: grpc.status.UNAUTHENTICATED,
+        details: error,
+      });
+    if (error.name === "CastError")
+      return callback({ code: grpc.status.INVALID_ARGUMENT, details: "Folder ID invalid" });
     callback({
       code: grpc.status.UNKNOWN,
       details: error,

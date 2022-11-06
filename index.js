@@ -35,6 +35,7 @@ server.addService(filesProto.FileService.service, {
   Login: userController.Login,
   Register: userController.Register,
   CreateFolder: folderController.CreateFolder,
+  GetFolderContent: folderController.GetFolderContent,
   CreateFile: fileController.CreateFile,
 });
 
