@@ -71,7 +71,7 @@ exports.GetFolderContent = async (call, callback) => {
 
     // Check if folder exists
     const folderExists = await Folder.findOne({ user_id: user_id, _id: call.request.folder_id });
-    if (!folderExists) return callback({ code: grpc.status.NOT_FOUND, details: "Folder doesn't exists" });
+    if (!folderExists) return callback({ code: grpc.status.NOT_FOUND, details: "Folder doesn't exist" });
 
     // Get files in folder
     const filesFound = await File.find({ user_id: user_id, folder_id: folderExists._id })
