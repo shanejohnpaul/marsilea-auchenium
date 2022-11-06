@@ -10,6 +10,6 @@ const folderSchema = new Schema(
   { timestamps: { createdAt: "created_at", updatedAt: null } }
 );
 
-folderSchema.index({ user_id: 1, name: 1 });
+folderSchema.index({ user_id: 1, name: 1 }); //compound index on user_id and folder name
 
 module.exports = mongoose.model("Folder", folderSchema);

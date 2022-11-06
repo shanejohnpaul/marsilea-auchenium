@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 
-//accessLevels --> specify which type of users can access the route
+//Check if token is valid and return user ID
 module.exports = (metadata) => {
   try {
     if (!metadata.internalRepr.has("authorization")) throw "Invalid token/Session expired";
