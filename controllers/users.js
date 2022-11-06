@@ -45,6 +45,7 @@ exports.Login = async (call, callback) => {
 
     // Find username
     const userFound = await User.findOne({ username: call.request.username }).lean();
+    if (!userFound) return callback({ code: grpc.status.UNAUTHENTICATED, details: "Invalid username/password" });
 
     // Check password
     const match = await bcrypt.compare(call.request.pwd, userFound.pwd_hash);
