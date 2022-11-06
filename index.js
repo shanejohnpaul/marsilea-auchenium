@@ -3,6 +3,7 @@ const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 const userController = require("./controllers/users");
 const folderController = require("./controllers/folders");
+const fileController = require("./controllers/files");
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
@@ -34,6 +35,7 @@ server.addService(filesProto.FileService.service, {
   Login: userController.Login,
   Register: userController.Register,
   CreateFolder: folderController.CreateFolder,
+  CreateFile: fileController.CreateFile,
 });
 
 server.bindAsync(`0.0.0.0:${process.env.PORT}`, grpc.ServerCredentials.createInsecure(), () => {
