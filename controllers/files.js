@@ -83,7 +83,7 @@ exports.GetFileContent = async (call, callback) => {
       return callback({ code: grpc.status.INVALID_ARGUMENT, details: "File ID required" });
 
     // Get file content
-    const fileContent = await File.find({ user_id: user_id, _id: call.request.file_id }).select("content").lean();
+    const fileContent = await File.findOne({ user_id: user_id, _id: call.request.file_id }).select("content").lean();
 
     if (!fileContent) return callback({ code: grpc.status.NOT_FOUND, details: "File doesn't exist" });
 
