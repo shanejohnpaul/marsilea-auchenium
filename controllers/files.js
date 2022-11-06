@@ -64,6 +64,8 @@ exports.CreateFile = async (call, callback) => {
         code: grpc.status.UNAUTHENTICATED,
         details: error,
       });
+    if (error.name === "CastError")
+      return callback({ code: grpc.status.INVALID_ARGUMENT, details: "Folder ID invalid" });
     callback({
       code: grpc.status.UNKNOWN,
       details: error,
@@ -93,6 +95,7 @@ exports.GetFileContent = async (call, callback) => {
         code: grpc.status.UNAUTHENTICATED,
         details: error,
       });
+    if (error.name === "CastError") return callback({ code: grpc.status.INVALID_ARGUMENT, details: "File ID invalid" });
     callback({
       code: grpc.status.UNKNOWN,
       details: error,
@@ -131,6 +134,8 @@ exports.MoveFile = async (call, callback) => {
         code: grpc.status.UNAUTHENTICATED,
         details: error,
       });
+    if (error.name === "CastError")
+      return callback({ code: grpc.status.INVALID_ARGUMENT, details: "File/Folder ID invalid" });
     callback({
       code: grpc.status.UNKNOWN,
       details: error,
