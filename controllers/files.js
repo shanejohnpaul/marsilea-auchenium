@@ -33,7 +33,7 @@ exports.CreateFile = async (call, callback) => {
 
     // Check if folder exists only when folder_id is mentioned
     if (!(call.request.folder_id === "" || call.request.folder_id === undefined)) {
-      const folderExists = await Folder.exists({ user_id: user_id, _id: fileInfo.folder_id });
+      const folderExists = await Folder.exists({ user_id: user_id, _id: call.request.folder_id });
       if (!folderExists) return callback({ code: grpc.status.NOT_FOUND, details: "Folder doesn't exist" });
       fileInfo.folder_id = call.request.folder_id;
     }
