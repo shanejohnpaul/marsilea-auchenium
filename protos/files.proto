@@ -28,13 +28,13 @@ message LoginResponse { string token = 1; }
 message File {
   string _id = 1;
   string name = 2;
-  string createdAt = 3;
+  string created_at = 3;
 }
 
 message Folder {
   string _id = 1;
   string name = 2;
-  string createdAt = 3;
+  string created_at = 3;
 }
 
 // Get folder content messages
@@ -56,7 +56,7 @@ message GetFileContentResponse { string content = 1; }
 message CreateFileRequest {
   string name = 1;
   string content = 2;
-  string folder_id = 3;
+  optional string folder_id = 3;
 }
 
 message CreateFileResponse { File file = 1; }

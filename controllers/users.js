@@ -5,9 +5,10 @@ const User = require("../models/User");
 
 exports.Register = async (call, callback) => {
   try {
-    if (call.request.name === "") callback({ code: grpc.status.INVALID_ARGUMENT, details: "Name required" });
-    if (call.request.username === "") callback({ code: grpc.status.INVALID_ARGUMENT, details: "Username required" });
-    if (call.request.pwd === "") callback({ code: grpc.status.INVALID_ARGUMENT, details: "Password required" });
+    if (call.request.name === "") return callback({ code: grpc.status.INVALID_ARGUMENT, details: "Name required" });
+    if (call.request.username === "")
+      return callback({ code: grpc.status.INVALID_ARGUMENT, details: "Username required" });
+    if (call.request.pwd === "") return callback({ code: grpc.status.INVALID_ARGUMENT, details: "Password required" });
 
     // Hash password
     const passwordHash = await bcrypt.hash(call.request.pwd, 10);
@@ -25,7 +26,7 @@ exports.Register = async (call, callback) => {
   } catch (error) {
     console.log(error);
     if (error.name === "MongoServerError" && error.code === 11000)
-      callback({
+      return callback({
         code: grpc.status.ALREADY_EXISTS,
         details: "Username already exists",
       });
@@ -38,8 +39,9 @@ exports.Register = async (call, callback) => {
 
 exports.Login = async (call, callback) => {
   try {
-    if (call.request.username === "") callback({ code: grpc.status.INVALID_ARGUMENT, details: "Username required" });
-    if (call.request.pwd === "") callback({ code: grpc.status.INVALID_ARGUMENT, details: "Password required" });
+    if (call.request.username === "")
+      return callback({ code: grpc.status.INVALID_ARGUMENT, details: "Username required" });
+    if (call.request.pwd === "") return callback({ code: grpc.status.INVALID_ARGUMENT, details: "Password required" });
 
     // Find username
     const userFound = await User.findOne({ username: call.request.username }).lean();

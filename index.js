@@ -2,6 +2,7 @@ const PROTO_PATH = __dirname + "/protos/files.proto";
 const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
 const userController = require("./controllers/users");
+const folderController = require("./controllers/folders");
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
@@ -19,19 +20,20 @@ require("mongoose")
   });
 
 //gRPC load proto file
-var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
   arrays: true,
   defaults: true,
 });
 
-var filesProto = grpc.loadPackageDefinition(packageDefinition);
-var server = new grpc.Server();
+const filesProto = grpc.loadPackageDefinition(packageDefinition);
+const server = new grpc.Server();
 
 //gRPC create service
 server.addService(filesProto.FileService.service, {
   Login: userController.Login,
   Register: userController.Register,
+  CreateFolder: folderController.CreateFolder,
 });
 
 server.bindAsync(`0.0.0.0:${process.env.PORT}`, grpc.ServerCredentials.createInsecure(), () => {
