@@ -5,6 +5,7 @@ const userController = require("./controllers/users");
 const folderController = require("./controllers/folders");
 const fileController = require("./controllers/files");
 
+// Use dotenv only in dev environment
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
